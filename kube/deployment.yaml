@@ -1,0 +1,192 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tm-database-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tm-pyplanet-settings-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tm-maps-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tm-server-config-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tm-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tm-server
+  template:
+    metadata:
+      labels:
+        app: tm-server
+    spec:
+      containers:
+        - name: tm-server
+          image: docker.io/jeremykrz/tm-server
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 2351
+            - containerPort: 3451
+            - containerPort: 5006
+          env:
+            # Variables d'environnement si nécessaire
+            - name: "SERVER_TITLE"
+              value: "Trackmania"
+            - name: "SERVER_NAME"
+              value: "KRZ Training"
+            - name: "TRACKLIST"
+              value: "ascension.xml"
+          volumeMounts:
+            - name: tm-server-config-volume
+              mountPath: /home/server/tm_server/UserData/Config/dedicated_cfg.txt
+            - name: tm-maps-volume
+              mountPath: /home/server/tm_server/UserData/Maps
+      volumes:
+        - name: tm-server-config-volume
+          persistentVolumeClaim:
+            claimName: tm-server-config-pvc
+        - name: tm-maps-volume
+          persistentVolumeClaim:
+            claimName: tm-maps-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tm-database-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tm-database
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tm-database
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: tm-database
+          image: mariadb:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 3306
+          env:
+            - name: "MYSQL_ROOT_PASSWORD"
+              value: "root"
+            - name: "MYSQL_DATABASE"
+              value: "pyplanet"
+            - name: "MYSQL_USER"
+              value: "pyplanet"
+            - name: "MYSQL_PASSWORD"
+              value: "pyplanet"
+          args:
+            - "--character-set-server=utf8mb4"
+            - "--collation-server=utf8mb4_unicode_ci"
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - mysql --user=root --password=$$MYSQL_ROOT_PASSWORD --execute="SELECT 1"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - mysqladmin --user=root --password=$$MYSQL_ROOT_PASSWORD ping
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: tm-database-volume
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: tm-database-volume
+          persistentVolumeClaim:
+            claimName: tm-database-pvc
+      restartPolicy: "Always"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tm-pyplanet-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tm-pyplanet
+  template:
+    metadata:
+      labels:
+        app: tm-pyplanet
+    spec:
+      containers:
+        - name: tm-pyplanet
+          image: docker.io/jeremykrz/tm-pyplanet
+          imagePullPolicy: "Always"
+          volumeMounts:
+            - name: tm-pyplanet-settings-volume
+              mountPath: /home/server/pyplanet/settings
+            - name: tm-maps-volume
+              mountPath: /home/server/tm_server/UserData/Maps
+          restartPolicy: Always
+      volumes:
+        - name: tm-pyplanet-settings-volume
+          persistentVolumeClaim:
+            claimName: tm-pyplanet-settings-pvc
+        - name: tm-maps-volume
+          persistentVolumeClaim:
+            claimName: tm-maps-pvc
+      restartPolicy: Always

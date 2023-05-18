@@ -1,0 +1,6 @@
+**/settings/*.yaml
+*.Gbx
+
+dedicated_cfg.txt
+
+**/MatchSettings/*.xml

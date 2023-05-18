@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tm-server-service
+spec:
+  selector:
+    app: tm-server
+  ports:
+    - name: tcp-port-2351
+      protocol: TCP
+      port: 2351
+      targetPort: 2351
+    - name: udp-port-2351
+      protocol: UDP
+      port: 2351
+      targetPort: 2351
+    - name: tcp-port-3451
+      protocol: TCP
+      port: 3451
+      targetPort: 3451
+    - name: udp-port-3451
+      protocol: UDP
+      port: 3451
+      targetPort: 3451
+    - name: tcp-port-5006
+      protocol: TCP
+      port: 5006
+      targetPort: 5006
+    - name: udp-port-5006
+      protocol: UDP
+      port: 5006
+      targetPort: 5006
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tm-database-service
+spec:
+  selector:
+    app: tm-database
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tm-pyplanet-service
+spec:
+  selector:
+    app: tm-pyplanet
