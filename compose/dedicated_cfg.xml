@@ -74,7 +74,7 @@
 
 		<p2p_cache_size>4000</p2p_cache_size>
 
-		<force_ip_address></force_ip_address>
+		<force_ip_address>34.121.40.98</force_ip_address>
 		<server_port>2351</server_port>
 		<server_p2p_port>3451</server_p2p_port>
 		<client_port>0</client_port>
