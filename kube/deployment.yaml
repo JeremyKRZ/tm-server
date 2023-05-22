@@ -69,18 +69,6 @@ spec:
         - name: pyplanet
           image: gcr.io/tm-server-krz/pyplanet:latest
           imagePullPolicy: "Always"
-          readinessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - |
-                  nc -z -w 1 server-service 2351  # Adjust the host and port according to the server container
-                  nc -z -w 1 database-service 3306  # Adjust the host and port according to the database container
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            failureThreshold: 3
-            timeoutSeconds: 1
       restartPolicy: Always
 ---
 

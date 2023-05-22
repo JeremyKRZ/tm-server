@@ -30,6 +30,7 @@ spec:
       protocol: UDP
       port: 5006
       targetPort: 5006
+  type: LoadBalancer
 
 ---
 
