@@ -16,9 +16,9 @@ WORKDIR $HOME
 RUN curl -LJO http://files.v04.maniaplanet.com/server/TrackmaniaServer_Latest.zip && \
     unzip TrackmaniaServer_Latest.zip -d tm_server/ && rm TrackmaniaServer_Latest.zip
 WORKDIR $SERVER_HOME
-COPY run.sh .
-COPY ../compose/maps $MAPS
-COPY ../compose/dedicated_cfg.xml /home/server/tm_server/UserData/Config/dedicated_cfg.xml
+COPY server_run.sh .
+COPY maps $MAPS
+COPY dedicated_cfg.xml /home/server/tm_server/UserData/Config/dedicated_cfg.xml
 
 # switch to server user
 RUN chown -R server:server $HOME
@@ -33,4 +33,4 @@ EXPOSE 3451/udp
 EXPOSE 5006
 
 # docs: https://doc.maniaplanet.com/dedicated-server/references/command-line
-CMD "./run.sh"
+CMD "./server_run.sh"

@@ -1,13 +1,13 @@
 steps:
   # Build and push the server Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/server:$COMMIT_SHA', './server']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/server:$COMMIT_SHA', './compose/server.Dockerfile']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/server:$COMMIT_SHA']
 
   # Build and push the pyplanet Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA', './pyplanet']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA', './compose/pyplanet.Dockerfile']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA']
 

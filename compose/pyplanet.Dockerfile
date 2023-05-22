@@ -13,9 +13,9 @@ RUN mkdir -p /home/server && groupadd server && useradd -g server server && mkdi
 
 # install dedicated server files
 WORKDIR $PYPLANET_HOME
-COPY run.sh .
-COPY ../compose/maps $MAPS
-COPY ../compose/pyplanet/settings /home/server/pyplanet/settings
+COPY pyplanet_run.sh .
+COPY maps $MAPS
+COPY pyplanet/settings /home/server/pyplanet/settings
 
 # switch to server user
 RUN chown -R server:server $HOME
@@ -24,9 +24,9 @@ RUN chmod +x *.sh
 
 # install pyplanet
 ENV PATH="${PATH}:/home/server/.local/bin"
-ADD pyplanet $PYPLANET_HOME
+ADD pyplanet/manage $PYPLANET_HOME
 RUN pip3 install --user -r $PYPLANET_HOME/requirements.txt && \
     mkdir $PYPLANET_HOME/tmp && mkdir $PYPLANET_HOME/logs
 
 # docs: https://pypla.net/en/latest/intro/configuration.html
-CMD "./run.sh"
+CMD "./pyplanet_run.sh"
