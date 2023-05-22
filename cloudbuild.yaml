@@ -28,3 +28,16 @@ steps:
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=tm-server-cluster'
+  
+  # Delete existing pods for server and pyplanet deployments
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['delete', 'pods', '-l', 'app=server']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=tm-server-cluster'
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['delete', 'pods', '-l', 'app=pyplanet']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=tm-server-cluster'
