@@ -12,16 +12,16 @@ DATABASES:
     ENGINE: 'peewee_async.MySQLDatabase'
     NAME: 'pyplanet'
     OPTIONS:
-      host: 'database'
+      host: 'database-service'
       user: 'pyplanet'
       password: 'pyplanet'
       charset: 'utf8mb4'
 DEDICATED:
   default:
-    HOST: 'server'
+    HOST: 'server-internal-service'
     PORT: '5006'
     USER: 'SuperAdmin'
-    PASSWORD: 'SuperAdmin'
+    PASSWORD: 'KRZSIALEroyal'
 MAP_MATCHSETTINGS:
   default: 'maplist.txt'
 BLACKLIST_FILE:

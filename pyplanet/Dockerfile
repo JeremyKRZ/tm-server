@@ -1,16 +1,21 @@
 FROM python:3.8-buster
 
 # update & install packages
-RUN apt-get update -yq && apt-get install -yq mariadb-client
+RUN apt-get update -yq && apt-get install -yq mariadb-client curl
 
-# create server user
+# Create ENV variables
 ENV HOME=/home/server
 ENV PYPLANET_HOME=/home/server/pyplanet
+ENV MAPS=/home/server/pyplanet/UserData/Maps
+
+# create server user
 RUN mkdir -p /home/server && groupadd server && useradd -g server server && mkdir -p $PYPLANET_HOME
 
 # install dedicated server files
 WORKDIR $PYPLANET_HOME
 COPY run.sh .
+COPY ../compose/maps $MAPS
+COPY ../compose/pyplanet/settings /home/server/pyplanet/settings
 
 # switch to server user
 RUN chown -R server:server $HOME

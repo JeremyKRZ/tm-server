@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <playlist>
 	<gameinfos>
 		<game_mode>0</game_mode>
@@ -6,10 +6,8 @@
 	</gameinfos>
 
 	<mode_script_settings>
-        <setting name="S_TimeLimit" type="integer" value="3600"/>
+        <setting name="S_TimeLimit" type="integer" value="3600" />
   </mode_script_settings>
 
 	<startindex>0</startindex>
-	<map><file>Campaigns/Ascension/GlaceEnSillons - Ascension2023.Map.Gbx</file></map>
-	
-</playlist>
+	<map><file>Campaigns/Ascension/GlaceEnSillons-Ascension2023.Map.Gbx</file></map></playlist>

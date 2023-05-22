@@ -1,11 +1,14 @@
 FROM debian:buster
 
-# update & install packages
-RUN apt-get update -yq && apt-get install -yq curl unzip
+# Update & install packages
+RUN apt-get update -yq && apt-get install -yq sudo curl unzip
 
-# create server user
+# Create ENV variables
 ENV HOME=/home/server
 ENV SERVER_HOME=/home/server/tm_server
+ENV MAPS=/home/server/tm_server/UserData/Maps
+
+# create server user
 RUN mkdir -p /home/server && groupadd server && useradd -g server server && mkdir -p $SERVER_HOME
 
 # install dedicated server files
@@ -14,6 +17,8 @@ RUN curl -LJO http://files.v04.maniaplanet.com/server/TrackmaniaServer_Latest.zi
     unzip TrackmaniaServer_Latest.zip -d tm_server/ && rm TrackmaniaServer_Latest.zip
 WORKDIR $SERVER_HOME
 COPY run.sh .
+COPY ../compose/maps $MAPS
+COPY ../compose/dedicated_cfg.xml /home/server/tm_server/UserData/Config/dedicated_cfg.xml
 
 # switch to server user
 RUN chown -R server:server $HOME

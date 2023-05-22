@@ -9,11 +9,12 @@ echo "TRACKLIST: ${TRACKLIST}"
 # func: keep tmserver running
 run_tmserver() {
   cd $SERVER_HOME
+  pwd
   while :
   do
     echo "TrackManiaServer starting..."
-    ./TrackmaniaServer /nodaemon /nologs \
-      /dedicated_cfg="dedicated_cfg.txt" \
+    ./TrackmaniaServer /nodaemon \
+      /dedicated_cfg="dedicated_cfg.xml" \
       /game_settings="MatchSettings/${TRACKLIST}" \
       /title="${SERVER_TITLE}" \
       /servername="${SERVER_NAME}"
@@ -23,5 +24,6 @@ run_tmserver() {
 }
 
 # run services
+./dl_maps_from_bucket.sh
 run_tmserver &
 wait

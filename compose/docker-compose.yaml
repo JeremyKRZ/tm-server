@@ -3,7 +3,7 @@ version: '3.7'
 services:
   database:
     image: mariadb:latest
-    container_name: database
+    container_name: database-service
     restart: on-failure
     volumes:
       - database-volume:/var/lib/mysql
@@ -28,7 +28,7 @@ services:
     image: tm-server
     container_name: server
     depends_on:
-      - database
+      - database-service
     build: ../server
     environment:
       SERVER_TITLE: "Trackmania"
@@ -42,7 +42,7 @@ services:
     expose:
       - 5006
     volumes:
-      - ./dedicated_cfg.txt:/home/server/tm_server/UserData/Config/dedicated_cfg.txt:z
+      - ./dedicated_cfg.txt:/home/server/tm_server/UserData/Config/dedicated_cfg.xml:z
       - ./maps:/home/server/tm_server/UserData/Maps:z
     networks:
       - server-network
@@ -53,11 +53,11 @@ services:
     build: ../pyplanet
     restart: on-failure
     depends_on:
-      - database
+      - database-service
       - server
     volumes:
       - ./pyplanet/settings:/home/server/pyplanet/settings:Z
-      - ./maps:/home/server/tm_server/UserData/Maps:z
+      - ./maps:/home/server/pyplanet/UserData/Maps:z
     networks:
       - server-network
 

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tm-server-service
+  name: server-global-service
 spec:
   selector:
-    app: tm-server
+    app: server
   ports:
     - name: tcp-port-2351
       protocol: TCP
@@ -36,21 +36,30 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tm-database-service
+  name: server-internal-service
 spec:
   selector:
-    app: tm-database
+    app: server
   ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
+    - name: tcp-port-5006
+      protocol: TCP
+      port: 5006
+      targetPort: 5006
+    - name: udp-port-5006
+      protocol: UDP
+      port: 5006
+      targetPort: 5006
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: tm-pyplanet-service
+  name: database-service
 spec:
   selector:
-    app: tm-pyplanet
+    app: database
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
