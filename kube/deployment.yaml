@@ -42,8 +42,6 @@ spec:
               value: "KRZ Training"
             - name: "TRACKLIST"
               value: "ascension.xml"
-      dependsOn:
-        - name : database-deployment
 ---
 
 apiVersion: apps/v1
@@ -60,14 +58,30 @@ spec:
       labels:
         app: pyplanet
     spec:
+      initContainers:
+        - name: wait-for-server
+          image: busybox
+          command: ["sh", "-c", "until nslookup server-deployment.$(namespace).svc.cluster.local; do echo waiting for server; sleep 2; done"]
+        - name: wait-for-database
+          image: busybox
+          command: ["sh", "-c", "until nslookup database-deployment.$(namespace).svc.cluster.local; do echo waiting for database; sleep 2; done"]
       containers:
         - name: pyplanet
           image: gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA
           imagePullPolicy: "Always"
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - |
+                  nc -z -w 1 server-service 2351  # Adjust the host and port according to the server container
+                  nc -z -w 1 database-service 3306  # Adjust the host and port according to the database container
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 1
       restartPolicy: Always
-      dependsOn:
-        - name: server-deployment
-        - name: database-deployment
 ---
 
 apiVersion: apps/v1
