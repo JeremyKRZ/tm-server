@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: gcr.io/$PROJECT_ID/server:$COMMIT_SHA
+          image: gcr.io/tm-server-krz/server:latest
           imagePullPolicy: "Always"
           ports:
             - containerPort: 2351
@@ -67,7 +67,7 @@ spec:
           command: ["sh", "-c", "until nslookup database-deployment.$(namespace).svc.cluster.local; do echo waiting for database; sleep 2; done"]
       containers:
         - name: pyplanet
-          image: gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA
+          image: gcr.io/tm-server-krz/pyplanet:latest
           imagePullPolicy: "Always"
           readinessProbe:
             exec:
