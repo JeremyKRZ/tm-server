@@ -8,7 +8,6 @@ steps:
         export SSH=$(gcloud secrets versions access latest --secret="xdarkus77-vm-ssh-key")
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
     args:
       - 'compute'
       - 'ssh'
