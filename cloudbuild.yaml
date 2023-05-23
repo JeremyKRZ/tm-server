@@ -5,14 +5,16 @@ steps:
     args:
       - '-c'
       - |
-        export SSH=$(gcloud secrets versions access latest --secret="xdarkus77-vm-ssh-key")
+        export SSH_KEY=$(gcloud secrets versions access latest --secret="xdarkus77-vm-ssh-key")
 
-  - name: 'gcr.io/cloud-builders/gcloud'
+  # Connect to the VM using SSH client
+  - name: 'gcr.io/cloud-builders/ssh'
     args:
-      - 'compute'
-      - 'ssh'
+      - '-i'
+      - '${_SSH_KEY}'
+      - '-o'
+      - 'StrictHostKeyChecking=no'
+      - '-o'
+      - 'UserKnownHostsFile=/dev/null'
       - 'xdarkus77@instance-1'
-      - '--project=tm-server-krz'
-      - '--zone=europe-west9-a'
-      - '--ssh-key-file=${_SSH}'
-      - '--command=cd tm-server && git pull && cd ./compose && docker-compose up -d --build'
+      - 'cd tm-server && git pull && cd ./compose && docker-compose up -d --build'
