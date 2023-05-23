@@ -1,10 +1,9 @@
 steps:
-
   - name: 'gcr.io/cloud-builders/gcloud'
-    id: update staging server
-    entrypoint: '/bin/sh'
     args:
-      - '-c'
-      - |
-        set -x && \
-        gcloud compute ssh instance-1 --zone=europe-west9-a --command='/bin/sh /home/xdarkus/tm-server/pull.sh
+      - 'compute'
+      - 'ssh'
+      - 'instance-1'
+      - '--project=tm-server-krz'
+      - '--zone=europe-west9-a'
+      - '--command=cd tm-server && git pull'
