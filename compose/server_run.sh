@@ -24,6 +24,5 @@ run_tmserver() {
 }
 
 # run services
-./dl_maps_from_bucket.sh
 run_tmserver &
 wait
