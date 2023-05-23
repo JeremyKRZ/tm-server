@@ -1,43 +1,8 @@
 steps:
-  # Build and push the server Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/server:$COMMIT_SHA', '-t', 'gcr.io/$PROJECT_ID/server:latest', '-f', './compose/server.Dockerfile', './compose']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/server:$COMMIT_SHA']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/server:latest']
 
-  # Build and push the pyplanet Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA', '-t', 'gcr.io/$PROJECT_ID/pyplanet:latest', '-f', './compose/pyplanet.Dockerfile', './compose']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/pyplanet:$COMMIT_SHA']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/pyplanet:latest']
-
-  # Deploy to GKE
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['apply', '-f', 'kube/deployment.yaml']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-west1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=server-cluster'
-  
-   # Apply the service configuration
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['apply', '-f', 'kube/service.yaml']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-west1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=server-cluster'
-  
-  # Delete existing pods for server and pyplanet deployments
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['delete', 'pods', '-l', 'app=server']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-west1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=server-cluster'
-
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['delete', 'pods', '-l', 'app=pyplanet']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-west1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=server-cluster'
+  - name: 'gcr.io/cloud-builders/ssh'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          ssh xdarkus77@instance-1 'cd tm-server && git pull && docker-compose up -d'

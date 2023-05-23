@@ -29,7 +29,7 @@ services:
     container_name: server
     depends_on:
       - database-service
-    build: ../server
+    build: server.Dockerfile
     environment:
       SERVER_TITLE: "Trackmania"
       SERVER_NAME: "KRZ Training"
@@ -50,7 +50,7 @@ services:
   pyplanet:
     container_name: pyplanet
     image: tm-pyplanet
-    build: ../pyplanet
+    build: pyplanet.Dockerfile
     restart: on-failure
     depends_on:
       - database-service
