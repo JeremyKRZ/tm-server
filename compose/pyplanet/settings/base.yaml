@@ -12,13 +12,13 @@ DATABASES:
     ENGINE: 'peewee_async.MySQLDatabase'
     NAME: 'pyplanet'
     OPTIONS:
-      host: 'database-service'
+      host: 'database'
       user: 'pyplanet'
       password: 'pyplanet'
       charset: 'utf8mb4'
 DEDICATED:
   default:
-    HOST: 'server-internal-service'
+    HOST: 'server'
     PORT: '5006'
     USER: 'SuperAdmin'
     PASSWORD: 'KRZSIALEroyal'
