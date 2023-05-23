@@ -1,8 +1,10 @@
 steps:
 
-  - name: 'gcr.io/cloud-builders/ssh'
-    entrypoint: 'bash'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: update staging server
+    entrypoint: '/bin/sh'
     args:
       - '-c'
       - |
-          ssh xdarkus77@instance-1 'cd tm-server && git pull && docker-compose up -d'
+        set -x && \
+        gcloud compute ssh instance-1 --zone=europe-west9-a --command='/bin/sh /home/xdarkus/tm-server/pull.sh
