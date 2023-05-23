@@ -35,7 +35,7 @@ services:
     environment:
       SERVER_TITLE: "Trackmania"
       SERVER_NAME: "KRZ Training"
-      TRACKLIST: "ascension.xml"
+      TRACKLIST: "royal.xml"
     ports:
       - 2351:2351/udp
       - 2351:2351/tcp
