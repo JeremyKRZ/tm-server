@@ -1,15 +1,19 @@
 steps:
+
   - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        export SSH=$(gcloud secrets versions access latest --secret="xdarkus77-vm-ssh-key")
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
     args:
       - 'compute'
       - 'ssh'
-      - 'instance-1'
+      - 'xdarkus77@instance-1'
       - '--project=tm-server-krz'
       - '--zone=europe-west9-a'
-      - '--ssh-key-file=$$SSH-KEY'
+      - '--ssh-key-file=${_SSH}'
       - '--command=cd tm-server && git pull'
-    secretEnv: ['SSH-KEY']
-availableSecrets:
-  secretManager:
-  - versionName: projects/873476583868/secrets/cloud-build-ssh-key/versions/1
-    env: 'SSH-KEY'
