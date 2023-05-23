@@ -3,7 +3,7 @@ version: '3.7'
 services:
   database:
     image: mariadb:latest
-    container_name: database-service
+    container_name: database
     restart: on-failure
     volumes:
       - database-volume:/var/lib/mysql
@@ -28,7 +28,7 @@ services:
     image: tm-server
     container_name: server
     depends_on:
-      - database-service
+      - database
     build: server.Dockerfile
     environment:
       SERVER_TITLE: "Trackmania"
@@ -53,7 +53,7 @@ services:
     build: pyplanet.Dockerfile
     restart: on-failure
     depends_on:
-      - database-service
+      - database
       - server
     volumes:
       - ./pyplanet/settings:/home/server/pyplanet/settings:Z
