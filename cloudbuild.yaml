@@ -15,4 +15,4 @@ steps:
       - '--project=tm-server-krz'
       - '--zone=europe-west9-a'
       - '--ssh-key-file=${_SSH}'
-      - '--command=cd tm-server && git pull'
+      - '--command=cd tm-server && git pull && cd ./compose && docker-compose up -d --build'
