@@ -4,6 +4,7 @@ steps:
       - 'compute'
       - 'ssh'
       - 'instance-1'
+      - '--tunnel-through-iap'
       - '--project=tm-server-krz'
       - '--zone=europe-west9-a'
       - '--command=cd tm-server && git pull'
