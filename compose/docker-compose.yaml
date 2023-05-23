@@ -44,7 +44,7 @@ services:
     expose:
       - 5006
     volumes:
-      - ./dedicated_cfg.txt:/home/server/tm_server/UserData/Config/dedicated_cfg.xml:z
+      - ./dedicated_cfg.xml:/home/server/tm_server/UserData/Config/dedicated_cfg.xml:z
       - ./maps:/home/server/tm_server/UserData/Maps:z
     networks:
       - server-network
