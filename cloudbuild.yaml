@@ -5,7 +5,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'xdarkus77@instance-1'
+      - 'xdarkus77@tm-server'
       - '--project=tm-server-krz'
       - '--zone=europe-west9-a'
-      - '--command=cd tm-server && git pull && cd compose && bash ./installer.sh && source ~/.bashrc && docker-compose up -d --build'
+      - '--command=cd tm-server && git pull && cd compose && sudo docker compose up -d --build'
