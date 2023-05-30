@@ -2,7 +2,7 @@ steps:
 
   # Connect to the VM using SSH client
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: bash
+    entrypoint: 'bash'
     args:
       - '-c'
       - |
