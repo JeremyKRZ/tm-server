@@ -4,10 +4,4 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        mkdir -p ~/root/.ssh && \\
-        gcloud secrets versions access latest --secret=xdarkus77-vm-ssh-key > ~/root/.ssh/id_rsa && \\
-        chmod 600 ~/root/.ssh/id_rsa && \\
-        set -x && \\
-        gcloud compute ssh instance-1 --ssh-key-file=~/root/.ssh/id_rsa --zone=europe-west9-a
+      - compute ssh xdarkus77@instance-1 --project=tm-server-krz --zone=europe-west9-a --command=cd tm-server && git pull && cd compose && docker-compose up -d --build
