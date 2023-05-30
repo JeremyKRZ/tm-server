@@ -2,6 +2,10 @@ steps:
 
   # Connect to the VM using SSH client
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
     args:
-      - compute ssh xdarkus77@instance-1 --project=tm-server-krz --zone=europe-west9-a --command=cd tm-server && git pull && cd compose && docker-compose up -d --build
+      - 'compute'
+      - 'ssh'
+      - 'xdarkus77@instance-1'
+      - '--project=tm-server-krz'
+      - '--zone=europe-west9-a'
+      - '--command=cd tm-server && git pull'
