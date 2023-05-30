@@ -8,4 +8,4 @@ steps:
       - 'xdarkus77@tm-server'
       - '--project=tm-server-krz'
       - '--zone=europe-west9-a'
-      - '--command=cd tm-server && git pull && cd compose && sudo docker compose up -d --build'
+      - '--command=cd tm-server && git pull && cd compose && sudo docker compose up -d'
