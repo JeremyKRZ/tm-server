@@ -1,0 +1,22 @@
+name: Deploy to GCP VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Git pull
+        run: ssh -o StrictHostKeyChecking=no xdarkus77@34.163.168.155 'cd tm-server && git pull'
+
+      - name: Docker Compose up
+        run: ssh -o StrictHostKeyChecking=no xdarkus77@34.163.168.155 'cd tm-server/compose && docker-compose up -d --build'
