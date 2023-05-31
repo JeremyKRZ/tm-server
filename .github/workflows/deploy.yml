@@ -19,4 +19,4 @@ jobs:
         run: ssh -o StrictHostKeyChecking=no xdarkus77@34.163.115.214 'cd tm-server && git pull'
 
       - name: Docker Compose up
-        run: ssh -o StrictHostKeyChecking=no xdarkus77@34.163.115.214 'cd tm-server/compose && docker-compose up -d --build'
+        run: ssh -o StrictHostKeyChecking=no xdarkus77@34.163.115.214 'cd tm-server/compose && docker compose up -d --build'
